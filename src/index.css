@@ -59,6 +59,10 @@
   .container {
     padding: 1.5rem;
   }
+  
+  .back__btn {
+    margin-bottom: 1rem;
+  }
 
   a {
     color: #0f3074;

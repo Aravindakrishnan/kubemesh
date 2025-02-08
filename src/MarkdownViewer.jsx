@@ -1,7 +1,11 @@
+import "./markdown.css";
+import "github-markdown-css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco';
 
 // Load all markdown files dynamically
 const markdownFiles = import.meta.glob("/src/docs/*.md", { as: "raw" });
@@ -22,10 +26,28 @@ function MarkdownViewer() {
   }, [fileName]);
 
   return (
-    <div className="container" id="markdown">
-      <button onClick={() => navigate(-1)}>⬅️ Back</button>
+    <div className="container markdown-container" id="markdown">
+      <button className="back__btn" onClick={() => navigate(-1)}>⬅️ Back</button>
       {/* <h1>{fileName.replace("-", " ")}</h1> */}
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+            <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+            code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || "");
+            return match ? (
+                <SyntaxHighlighter style={docco} language={match[1]} PreTag="div">
+                {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+            ) : (
+                <code {...props} className={className}>
+                {children}
+                </code>
+            );
+            },
+        }}
+        >
+        {content}
+        </ReactMarkdown>
     </div>
   );
 }
