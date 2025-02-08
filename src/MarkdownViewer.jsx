@@ -26,7 +26,8 @@ function MarkdownViewer() {
   }, [fileName]);
 
   return (
-    <div className="container markdown-container" id="markdown">
+    <div className="mk__container">
+            <div className="container markdown-container" id="markdown">
       <button className="back__btn" onClick={() => navigate(-1)}>⬅️ Back</button>
       {/* <h1>{fileName.replace("-", " ")}</h1> */}
             <ReactMarkdown
@@ -48,6 +49,7 @@ function MarkdownViewer() {
         >
         {content}
         </ReactMarkdown>
+    </div>
     </div>
   );
 }
